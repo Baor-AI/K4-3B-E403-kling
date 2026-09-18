@@ -4,14 +4,14 @@
 
 ## 👥 Thành viên nhóm & Phân công vai trò
 
-**Lớp:** 3B · **Phòng:** ____ · **Cụm:** ____ · **Track:** ____
+**Lớp:** 3B · **Phòng:** E403 · **Cụm:** Zone 5 · **Track:** b
 
 | Họ và Tên | Mã Học Viên | Vai trò chính | Phần việc đảm nhiệm trong dự án |
 |---|---|---|---|
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
+| Nguyễn Văn Bảo |2A202602862 | trưởng nhóm | Hoàn thiện Spec, kiểm soát 4 đường đi và rubric chấm bài. |
+| Nguyễn Minh Ngọc |2A202602530  | thành viên | Xây dựng tài liệu Grounding và cấu hình HAX G10/G11. |
+| Nguyễn Đình Anh |2A202602573  | thành viên | Xây dựng Clickable Prototype tương tác và kết nối API. |
+| Trần Thị Thu Trang |2A202602581 | thành viên | Chạy bộ Golden Set 20 case, đo lường tỷ lệ pass/fail cho CP3. |
 
 > Nhóm copy nguyên file README này về repo của mình, rồi điền bảng trên. Cột **Phần việc đảm nhiệm** ghi càng cụ thể càng tốt.
 
