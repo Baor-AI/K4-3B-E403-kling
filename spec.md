@@ -7,6 +7,40 @@
 
 ## §1. User & Job
 - **Job executor + workflow:** Học viên Khóa 4 đang ở các kênh thảo luận/hỏi-đáp công khai trên Discord, bối rối trước lịch trình, deadline nộp bài lab hoặc quy chế điểm danh. Workflow: Nhận thấy sắp đến hạn nộp $\rightarrow$ Lên Discord tìm thông tin $\rightarrow$ Gõ tin nhắn tag bot hỏi $\rightarrow$ Nhận câu trả lời và hành động nộp bài.
+ ```mermaid
+flowchart TD
+    Start([Học viên gõ tin nhắn tag @Trợ lý]) --> Step1[Nhận diện Ý định - Intent Classification]
+    
+    Step1 --> CheckIntent{Ý định là gì?}
+    
+    CheckIntent -- "Không liên quan / Chào hỏi" --> ChatGen[Trả lời thân thiện + Gợi ý phạm vi hỗ trợ\nHAX G1]
+    CheckIntent -- "Thủ tục / Deadline / Quy chế" --> Step2[Truy xuất cơ sở tri thức - Retrieval]
+    
+    Step2 --> CheckGrounding{Độ tin cậy & Căn cứ\nGrounding & Confidence}
+    
+    %% Đường 1: Happy Path
+    CheckGrounding -- "Cao (Khớp 100% tài liệu BTC)" --> Path1["ĐƯỜNG 1: HAPPY PATH\n- Trả lời ngắn gọn mốc giờ/quy định\n- Kèm link trích dẫn nguồn sự thật [HAX G11]\n- Hiện nút 'Đúng ý' / 'Hỏi thêm' [HAX G8]"]
+    
+    %% Đường 2: Low Confidence Path
+    CheckGrounding -- "Trung bình (Mơ hồ / Thiếu bối cảnh)" --> Path2["ĐƯỜNG 2: LOW-CONFIDENCE (Lớp ②)\n- HAX G10: Thu hẹp phạm vi khi nghi ngờ\n- Không đoán mò!\n- Hiện 2-3 nút lựa chọn ngữ cảnh làm rõ\n(VD: Lab offline hay Workshop online)"]
+    
+    Path2 --> UserChoice{Học viên chọn nút?}
+    UserChoice -- "Chọn nút cụ thể" --> Step2
+    UserChoice -- "Bỏ qua / Hủy" --> CloseThread[Đóng gợi ý / Thoát luồng\nHAX G8]
+    
+    %% Đường 3: No-Grounding / Out of Scope
+    CheckGrounding -- "Thấp / Không có văn bản / Cá nhân" --> Path3["ĐƯỜNG 3: FAILURE / NO-GROUNDING (Lớp ① & ③)\n- Báo rõ 'Chưa có thông báo chính thức'\n- Tuyệt đối không phỏng đoán hạn nộp\n- Đưa nút 'Tạo Ticket hỗ trợ' hoặc tự tag @TA"]
+    
+    %% Đường 4: Correction Path
+    Path1 --> UserFeedback{Người dùng phản hồi}
+    Path3 --> UserFeedback
+    
+    UserFeedback -- "Bấm 'Chưa đúng ý tôi' / Sửa câu hỏi" --> Path4["ĐƯỜNG 4: CORRECTION PATH (HAX G9)\n- Cho phép sửa câu hỏi hoặc chọn lại Intent\n- Cung cấp nút chuyển tiếp thẳng cho TA người thật\n- Ghi nhận failure log để cải thiện model"]
+    
+    UserFeedback -- "Hài lòng" --> EndOk([Kết thúc tương tác thành công])
+    Path4 --> EndEscalate([TA người thật vào thread hỗ trợ])
+```
+
 - **Core JTBD:** *"Khi đứng trước các mốc thời hạn và thủ tục học tập quan trọng, giúp tôi nắm bắt thông tin chính xác và kịp thời để không bị lỡ hạn nộp bài hay vi phạm quy chế lớp học."* (Không chứa từ khóa AI).
 - **Problem statement:** *"Học viên cần biết hạn nộp bài và thủ tục lớp học nhưng thông tin bị phân tán trên nhiều kênh, câu trả lời từ công cụ hỗ trợ hiện tại còn phỏng đoán, thiếu nguồn kiểm chứng hoặc trả lời sai bối cảnh, khiến học viên hoang mang và tốn thời gian xác minh lại."* (Không chứa từ khóa AI).
 - **Evidence:**
