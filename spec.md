@@ -156,15 +156,16 @@ flowchart TD
 
 ## §8. Phân công & Kế hoạch
 - **Phân công trách nhiệm:**
-  - `[Tên bạn 1]`: Product Lead — Hoàn thiện Spec, kiểm soát 4 đường đi và rubric chấm bài.
-  - `[Tên bạn 2]`: Prompt & Knowledge Engineer — Xây dựng tài liệu Grounding và cấu hình HAX G10/G11.
-  - `[Tên bạn 3]`: Frontend & Bot Developer — Xây dựng Clickable Prototype tương tác và kết nối API.
-  - `[Tên bạn 4]`: QA & Evaluator — Chạy bộ Golden Set 20 case, đo lường tỷ lệ pass/fail cho CP3.
+  - `[Nguyễn Văn Bảo]`: Product Lead — Hoàn thiện Spec, kiểm soát 4 đường đi và rubric chấm bài.
+  - `[Nguyễn Minh Ngọc]`: Prompt & Knowledge Engineer — Xây dựng tài liệu Grounding và cấu hình HAX G10/G11.
+  - `[Nguyễn Đình Anh]`: Frontend & Bot Developer — Xây dựng Clickable Prototype tương tác và kết nối API.
+  - `[Trần Thị Thu Trang]`: QA & Evaluator — Chạy bộ Golden Set 20 case, đo lường tỷ lệ pass/fail cho CP3.
 - **Willing users:** 2 học viên ngoài nhóm sẵn sàng tham gia thử nghiệm tại CP5.
-
+- Phạm Long Nhật
+- Nguyễn Tiến Lượng
 ---
 
 ## §9. Changelog
 | Thời điểm | Đổi gì | Vì sao |
 |---|---|---|
-| 17/09 · 18:45 | Tạo tài liệu Spec v1.0, cập nhật mục §4 và §6 | Hoàn thành yêu cầu thiết kế luồng trải nghiệm cho CP2 |
+| 18/09 · 18:45 | Tạo tài liệu Spec v1.0, cập nhật mục §4 và §6 | Hoàn thành yêu cầu thiết kế luồng trải nghiệm cho CP2 |
