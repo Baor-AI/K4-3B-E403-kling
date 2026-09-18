@@ -1,0 +1,1453 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FAQ Tức Thì — Prototype CP2 (Track B1)</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&family=JetBrains+Mono:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #f5f4ef;
+        --panel: #ffffff;
+        --panel-2: #edeae0;
+        --border: #ddd6c6;
+        --ink: #20241f;
+        --ink-dim: #6b6c5f;
+        --accent: #3d5a3a;
+        --accent-2: #8a6b3d;
+        --accent-soft: #e4ead9;
+        --bot-bubble: #eef2e9;
+        --user-bubble: #3d5a3a;
+        --user-bubble-ink: #ffffff;
+        --warn-bg: #fdf1de;
+        --warn-ink: #7a4a1a;
+        --danger-bg: #fbe6e2;
+        --danger-ink: #8a2f1f;
+        --ok-bg: #e4ead9;
+        --ok-ink: #2f4a2c;
+        --shadow:
+          0 1px 2px rgba(32, 36, 31, 0.06), 0 10px 28px rgba(32, 36, 31, 0.06);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #16180f;
+          --panel: #1f2116;
+          --panel-2: #262819;
+          --border: #3a3c2c;
+          --ink: #ecece2;
+          --ink-dim: #a3a492;
+          --accent: #8fd18a;
+          --accent-2: #e0b26e;
+          --accent-soft: #28331f;
+          --bot-bubble: #232a20;
+          --user-bubble: #3f6b3c;
+          --user-bubble-ink: #f2fbee;
+          --warn-bg: #3a2c17;
+          --warn-ink: #e6b878;
+          --danger-bg: #3a2320;
+          --danger-ink: #f0a591;
+          --ok-bg: #243322;
+          --ok-ink: #9fe0a0;
+          --shadow:
+            0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          "Source Sans 3",
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        margin: 0;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding-inline: 16px;
+        padding-block: 28px 56px;
+      }
+      h1,
+      h2 {
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 600;
+        margin: 0;
+        text-wrap: balance;
+      }
+      .eyebrow {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 8px;
+      }
+      header {
+        margin-bottom: 20px;
+      }
+      header h1 {
+        font-size: clamp(24px, 4.5vw, 32px);
+      }
+      .lede {
+        color: var(--ink-dim);
+        font-size: 14.5px;
+        max-width: 64ch;
+        margin-top: 8px;
+      }
+
+      .scenario-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-block: 18px 22px;
+      }
+      .scenario-btn {
+        font-family: inherit;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--ink);
+        padding: 9px 14px;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        transition:
+          transform 0.1s ease,
+          border-color 0.15s ease;
+      }
+      .scenario-btn:hover {
+        border-color: var(--accent);
+      }
+      .scenario-btn:active {
+        transform: scale(0.98);
+      }
+      .scenario-btn.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+      .scenario-btn .tag {
+        display: inline-block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        margin-right: 6px;
+        opacity: 0.75;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 18px;
+      }
+      @media (max-width: 680px) {
+        .stage {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .rail {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: var(--shadow);
+        align-self: start;
+        position: sticky;
+        top: 12px;
+      }
+      .rail h3 {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ink-dim);
+        margin: 0 0 10px;
+      }
+      .rail-item {
+        font-size: 13px;
+        padding: 7px 8px;
+        border-radius: 8px;
+        color: var(--ink-dim);
+        margin-bottom: 2px;
+        cursor: pointer;
+      }
+      .rail-item:hover {
+        background: var(--panel-2);
+      }
+      .rail-item.current {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .chat-panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 480px;
+      }
+      .chat-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel-2);
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chat-head-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .chat-head-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+      }
+      .chat-head .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .chat-head .name {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .chat-head .sub {
+        font-size: 12px;
+        color: var(--ink-dim);
+      }
+      .scenario-separator {
+        text-align: center;
+        margin: 16px 0 8px;
+        position: relative;
+      }
+      .scenario-separator::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        border-top: 1px dashed var(--border);
+        z-index: 1;
+      }
+      .scenario-separator span {
+        position: relative;
+        z-index: 2;
+        background: var(--panel);
+        padding: 3px 12px;
+        font-size: 11px;
+        color: var(--ink-dim);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        font-weight: 600;
+      }
+
+      .chat-body {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-height: 280px;
+        max-height: 380px;
+        overflow-y: auto;
+      }
+      .msg {
+        display: flex;
+        gap: 10px;
+        max-width: 88%;
+        opacity: 0;
+        transform: translateY(6px);
+        animation: in 0.35s ease forwards;
+      }
+      @keyframes in {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .msg.user {
+        align-self: flex-end;
+        flex-direction: row-reverse;
+      }
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        background: var(--accent-2);
+      }
+      .msg.user .avatar {
+        background: var(--ink-dim);
+      }
+      .bubble {
+        background: var(--bot-bubble);
+        color: var(--ink);
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: 14.5px;
+        line-height: 1.5;
+        border: 1px solid var(--border);
+      }
+      .msg.user .bubble {
+        background: var(--user-bubble);
+        color: var(--user-bubble-ink);
+        border-color: transparent;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 999px;
+        margin-bottom: 8px;
+      }
+      .badge.ok {
+        background: var(--ok-bg);
+        color: var(--ok-ink);
+      }
+      .badge.warn {
+        background: var(--warn-bg);
+        color: var(--warn-ink);
+      }
+      .badge.danger {
+        background: var(--danger-bg);
+        color: var(--danger-ink);
+      }
+
+      .source-line {
+        font-size: 11.5px;
+        color: var(--ink-dim);
+        margin-top: 8px;
+        font-style: italic;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .action-btn {
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--ink-dim);
+        padding: 6px 10px;
+      }
+      .action-btn:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .action-btn.done {
+        background: var(--ok-bg);
+        color: var(--ok-ink);
+        border-color: transparent;
+        cursor: default;
+      }
+
+      .ta-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--accent-2);
+        margin-top: 8px;
+      }
+
+      /* LIVE INPUT FORM */
+      .chat-input-bar {
+        display: flex;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--panel);
+        border-top: 1px solid var(--border);
+      }
+      .chat-input-bar input {
+        flex: 1;
+        padding: 9px 14px;
+        font-family: inherit;
+        font-size: 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--panel-2);
+        color: var(--ink);
+        outline: none;
+      }
+      .chat-input-bar input:focus {
+        border-color: var(--accent);
+      }
+      .chat-input-bar button {
+        padding: 9px 18px;
+        font-family: inherit;
+        font-size: 13.5px;
+        font-weight: 600;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .chat-input-bar button:hover {
+        opacity: 0.9;
+      }
+
+      .chat-foot {
+        padding: 10px 18px;
+        border-top: 1px solid var(--border);
+        background: var(--panel-2);
+        font-size: 12px;
+        color: var(--ink-dim);
+      }
+
+      .annot {
+        margin-top: 16px;
+        background: var(--panel-2);
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 13px;
+        color: var(--ink-dim);
+      }
+      .annot b {
+        color: var(--ink);
+      }
+
+      footer {
+        margin-top: 36px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        font-size: 12.5px;
+        color: var(--ink-dim);
+      }
+      code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        background: var(--panel-2);
+        padding: 1px 5px;
+        border-radius: 5px;
+      }
+
+      /* ===== CHANNEL SWITCHER ===== */
+      .channel-tabs {
+        display: flex;
+        gap: 2px;
+        padding: 8px 14px 0;
+        background: var(--panel-2);
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+      }
+      .ch-tab {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 13px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px 8px 0 0;
+        cursor: pointer;
+        background: transparent;
+        color: var(--ink-dim);
+        white-space: nowrap;
+        border-bottom: 2px solid transparent;
+        transition: color 0.15s, background 0.15s;
+      }
+      .ch-tab:hover {
+        background: var(--panel);
+        color: var(--ink);
+      }
+      .ch-tab.active {
+        background: var(--panel);
+        color: var(--ink);
+        border-bottom-color: var(--accent);
+      }
+      .ch-tab .ch-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .ch-dot.no-bot  { background: #c44; }
+      .ch-dot.has-bot { background: #3a9; }
+
+      /* ===== CHANNEL MODE BADGE ===== */
+      .ch-mode-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 3px 9px;
+        border-radius: 999px;
+      }
+      .ch-mode-badge.nobot {
+        background: var(--danger-bg);
+        color: var(--danger-ink);
+      }
+      .ch-mode-badge.hasbot {
+        background: var(--ok-bg);
+        color: var(--ok-ink);
+      }
+
+      /* ===== SYSTEM MESSAGE ===== */
+      .sys-msg {
+        text-align: center;
+        font-size: 11.5px;
+        color: var(--ink-dim);
+        padding: 6px 12px;
+        margin: 4px auto;
+        background: var(--panel-2);
+        border-radius: 8px;
+        border: 1px dashed var(--border);
+        max-width: 88%;
+        font-style: italic;
+      }
+
+      /* ===== TYPING INDICATOR ===== */
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        animation: in 0.3s ease forwards;
+      }
+      .typing-dots {
+        display: flex;
+        gap: 4px;
+        padding: 10px 14px;
+        background: var(--bot-bubble);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+      }
+      .typing-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--ink-dim);
+        animation: bounce 1.2s infinite;
+      }
+      .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+      .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes bounce {
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+        30% { transform: translateY(-5px); opacity: 1; }
+      }
+
+      /* ===== SUGGESTION HINT ===== */
+      .suggestion-hint {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12.5px;
+        color: var(--ink-dim);
+        padding: 8px 14px;
+        background: var(--warn-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        max-width: 88%;
+        opacity: 0;
+        animation: in 0.3s ease forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <p class="eyebrow">
+          Track B · Trợ lý Discord — CP2 clickable prototype
+        </p>
+        <h1>FAQ Tức Thì</h1>
+        <p class="lede">
+          Bấm một kịch bản bên dưới để xem bot "Trợ lý" xử lý câu hỏi thủ tục
+          lặp lại theo từng nhánh trải nghiệm — happy path, low-confidence,
+          no-grounding, correction, ngoài phạm vi, và case domain đặc thù.
+        </p>
+      </header>
+
+      <div class="scenario-bar" id="scenarioBar"></div>
+
+      <div class="stage">
+        <nav class="rail" id="rail">
+          <h3>4+2 nhánh trải nghiệm</h3>
+          <div id="railList"></div>
+        </nav>
+
+        <div class="chat-panel">
+          <!-- CHANNEL TAB SWITCHER -->
+          <div class="channel-tabs" id="channelTabs">
+            <button class="ch-tab" id="tab-ch02" data-ch="ch02">
+              <span class="ch-dot no-bot"></span>
+              #channel_02 · thảo-luận
+            </button>
+            <button class="ch-tab" id="tab-ch03" data-ch="ch03">
+              <span class="ch-dot no-bot"></span>
+              #channel_03 · hỏi-đáp
+            </button>
+            <button class="ch-tab" id="tab-ch10" data-ch="ch10">
+              <span class="ch-dot has-bot"></span>
+              #channel_10 · trợ-lý 🤖
+            </button>
+          </div>
+
+          <!-- CHAT HEADER -->
+          <div class="chat-head">
+            <div class="chat-head-left">
+              <div id="chModeBadge" class="ch-mode-badge nobot">🔕 KHÔNG CÓ BOT</div>
+              <div>
+                <div class="name" id="chName">#channel_02 · thảo-luận</div>
+                <div class="sub" id="chSub">Kênh thảo luận — Bot không trực ở đây</div>
+              </div>
+            </div>
+            <div class="chat-head-actions">
+              <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; color: var(--ink-dim); user-select: none;">
+                <input type="checkbox" id="keepHistoryToggle" checked />
+                <span>Nối tiếp lịch sử</span>
+              </label>
+              <button type="button" id="btnClearChat" style="background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 11.5px; cursor: pointer; color: var(--ink); font-weight: 500;">
+                🧹 Xóa chat
+              </button>
+            </div>
+          </div>
+          
+          <div class="chat-body" id="chatBody"></div>
+
+          <!-- KHUNG CHAT TƯƠNG TÁC TỰ GÕ -->
+          <form class="chat-input-bar" id="customChatForm">
+            <input 
+              type="text" 
+              id="customInput" 
+              placeholder="Gõ câu hỏi... (ch02/03: bot tự phát hiện · ch10: cần @Trợ lý)" 
+              autocomplete="off"
+            />
+            <button type="submit">Gửi</button>
+          </form>
+
+          <div class="chat-foot" id="chatFoot">
+            Chọn kênh ở trên rồi gõ câu hỏi — hoặc bấm kịch bản trải nghiệm bên sidebar.
+          </div>
+        </div>
+      </div>
+
+      <div class="annot" id="annot"></div>
+
+      <footer>
+        Prototype mức <b>Mock</b> — luồng điều hướng và tương tác (nút sửa/gạt
+        bỏ/tag TA) chạy thật bằng JS; nội dung "nhận diện FAQ trùng" mô phỏng
+        bằng case cố định, chưa gọi mô hình thật (phần đó thuộc CP3). Dựng cho
+        lát cắt <b>B1 · Trả lời tức thì FAQ lặp lại có căn cứ</b> — dữ liệu bằng chứng từ
+        <code>k4_messages.csv</code>.
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        // ===== CHANNEL STATE =====
+        var currentChannel = "ch02"; // ch02 | ch03 | ch10
+        var channelMeta = {
+          ch02: {
+            name: "#channel_02 · thảo-luận",
+            sub: "Kênh thảo luận — Tự động trả lời tức thì câu hỏi FAQ",
+            badge: "nobot",
+            badgeLabel: "⚡ TỰ ĐỘNG TRẢ LỜI",
+            hint: "Kênh thảo luận tự nhiên: Học viên hỏi câu hỏi FAQ sẽ được hệ thống phát hiện và trả lời ngay lập tức (không cần tag).",
+            placeholder: "Gõ câu hỏi — bot sẽ tự động trả lời ngay lập tức..."
+          },
+          ch03: {
+            name: "#channel_03 · hỏi-đáp",
+            sub: "Kênh hỏi đáp — Tự động trả lời tức thì câu hỏi FAQ",
+            badge: "nobot",
+            badgeLabel: "⚡ TỰ ĐỘNG TRẢ LỜI",
+            hint: "Kênh hỏi đáp chung: Học viên đặt câu hỏi sẽ được bot phản hồi ngay tức thì nếu đã có đáp án mẫu.",
+            placeholder: "Gõ câu hỏi — bot sẽ tự động trả lời ngay lập tức..."
+          },
+          ch10: {
+            name: "#channel_10 · trợ-lý",
+            sub: "Kênh trợ lý — Bot chỉ phản hồi khi được tag @Trợ lý",
+            badge: "hasbot",
+            badgeLabel: "🤖 CẦN TAG @TRỢ LÝ",
+            hint: "Kênh trợ lý: Cần tag @Trợ lý ở đầu câu hỏi để bot phản hồi. Nếu không tag, bot sẽ im lặng.",
+            placeholder: "Gõ @Trợ lý [câu hỏi] — bot chỉ trả lời khi có tag..."
+          }
+        };
+
+        // ===== MẪU TIN NHẮN MẶC ĐỊNH CHO TỪNG KÊNH =====
+        var defaultChannelMessages = {
+          ch02: [
+            { who: "sys", text: "📢 Kênh <b>#channel_02 · thảo-luận</b> — Kênh trao đổi tự do (KHÔNG CÓ BOT TRỰC). Học viên hỏi câu hỏi logistics/FAQ sẽ được bot tự động phát hiện và giải đáp ngay." }
+          ],
+          ch03: [
+            { who: "sys", text: "📢 Kênh <b>#channel_03 · hỏi-đáp</b> — Kênh hỏi đáp thắc mắc (KHÔNG CÓ BOT TRỰC). Các câu hỏi thủ tục sẽ được bot hỗ trợ tự động." }
+          ],
+          ch10: [
+            { who: "sys", text: "📢 Kênh <b>#channel_10 · trợ-lý</b> — KÊNH BOT TRỰC CHUYÊN DỤNG. Bot <b>CHỈ</b> phản hồi khi bạn tag <b>@Trợ lý</b> (nếu không tag, bot sẽ giữ im lặng)." }
+          ]
+        };
+
+        // Kho lưu trữ tin nhắn độc lập cho từng kênh (không bị đè hay lẫn lộn)
+        var channelStore = {
+          ch02: defaultChannelMessages.ch02.slice(),
+          ch03: defaultChannelMessages.ch03.slice(),
+          ch10: defaultChannelMessages.ch10.slice()
+        };
+
+        // Global map to cache bot answers for each normalized question
+        var answerCache = {};
+
+        // Biến ghi nhớ câu hỏi vừa hỏi mà chưa tag bot ở kênh ch10
+        var lastPendingQuestionInCh10 = "";
+
+        // ===== CHANNEL SWITCHER =====
+        document.querySelectorAll(".ch-tab").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            switchChannel(btn.getAttribute("data-ch"));
+          });
+        });
+
+        function switchChannel(ch) {
+          currentChannel = ch;
+          var meta = channelMeta[ch];
+
+          // Update tabs
+          document.querySelectorAll(".ch-tab").forEach(function(b) {
+            b.classList.toggle("active", b.getAttribute("data-ch") === ch);
+          });
+
+          // Update header
+          document.getElementById("chName").textContent = meta.name;
+          document.getElementById("chSub").textContent = meta.sub;
+          var badge = document.getElementById("chModeBadge");
+          badge.className = "ch-mode-badge " + meta.badge;
+          badge.textContent = meta.badgeLabel;
+
+          // Update placeholder
+          document.getElementById("customInput").placeholder = meta.placeholder;
+
+          // Render độc lập tin nhắn của kênh được chọn (xóa sạch khung cũ, nạp đúng kênh đó)
+          renderCurrentChannel();
+        }
+
+        var scenarios = [
+          {
+            id: "repeat-q",
+            tag: "🔁",
+            label: "Câu hỏi lặp",
+            railLabel: "Câu hỏi lặp (Pain Point)",
+            foot: "Cùng câu hỏi đã hỏi → bot nhận ra ngay, không cần chờ 2s.",
+            annot: "<b>Pain Point từ data thật:</b> 7 câu hỏi thủ tục bị hỏi lặp lại tổng cộng 16 lượt (M30246, M48859...). Bot nhận diện câu hỏi đã có đáp án xác nhận rồi → trả lời ngay, không để học viên chờ vô thời hạn. <b>Đây là tính năng ở channel_02/03 — kênh không có bot trực.</b>",
+            steps: [
+              { who: "sys", text: "📢 Kênh #channel_02 · thảo-luận — KHÔNG CÓ BOT TRỰC" },
+              { who: "user", text: "Hạn nộp bài Lab02 là khi nào vậy?" },
+              { who: "sys", text: "... im lặng 3 giây — không ai reply ..." },
+              {
+                who: "bot",
+                badge: ["ok", "🤖 Tự động · ✓ Khớp FAQ đã xác nhận"],
+                text: "Hạn nộp bài <b>Lab02</b> chính thức là <b>23:59 Thứ Sáu, ngày 18/09/2026</b> trên VLearn và GitHub Org.",
+                source: "Phát hiện tự động sau 3s không có phản hồi · Trích: #📢-thông-báo (BTC_ANN_042)",
+                actions: [{ label: "👍 Hữu ích", kind: "done" }, { label: "✏️ Báo sai", kind: "correct" }]
+              },
+              { who: "user", text: "Hạn nộp bài Lab02 là khi nào vậy?" },
+              {
+                who: "bot",
+                badge: ["ok", "🔁 Đã trả lời câu hỏi này · Trả lời ngay"],
+                text: "Mình đã thấy câu hỏi này vừa được hỏi ở kênh! Hạn nộp <b>Lab02</b> là <b>23:59 ngày 18/09/2026</b>.",
+                source: "Nhận diện câu hỏi lặp — không để học viên chờ lần hai",
+                actions: [{ label: "👍 Hữu ích", kind: "done" }]
+              }
+            ]
+          },
+          {
+            id: "happy",
+            tag: "①→ok",
+            label: "Happy path",
+            railLabel: "Happy path",
+            foot: "AI tự trả lời — khớp cao với thông báo BTC đã xác nhận.",
+            annot:
+              "<b>G11 — Giải thích vì sao:</b> câu trả lời luôn kèm dòng nguồn 'đã xác nhận lúc...' để học viên biết đây là đáp án từ thông báo chính thức, không phải suy luận mới. <b>G8 — Gạt bỏ dễ dàng:</b> có nút 'Không phải điều tôi hỏi' để thoát ngay nếu bot hiểu sai ý.",
+            steps: [
+              { who: "user", text: "Hạn nộp bài Lab02 là khi nào vậy bot?" },
+              {
+                who: "bot",
+                badge: ["ok", "✓ Khớp thông báo chính thức BTC"],
+                text: "Hạn nộp bài <b>Lab02</b> chính thức là <b>23:59 ngày 18/09/2026</b> trên hệ thống VLearn.",
+                source:
+                  "Trích dẫn từ kênh #📢-thông-báo-lớp-học (Thông báo lúc 13/09) · Phục vụ 110 lượt thắc mắc tương tự",
+                actions: [
+                  { label: "👍 Đúng ý mình", kind: "done" },
+                  { label: "Không phải điều tôi hỏi", kind: "plain" },
+                ],
+              },
+            ],
+          },
+          {
+            id: "low-confidence",
+            tag: "②",
+            label: "Low-confidence",
+            railLabel: "Low-confidence (②)",
+            foot: "AI trả lời phần chắc, chuyển TA phần mơ hồ — không đoán.",
+            annot:
+              "<b>G10 — Thu hẹp phạm vi khi nghi ngờ (bắt buộc):</b> câu hỏi lẫn phần cá nhân nên bot chỉ trả lời phần FAQ chung (cách xem XP), còn phần 'XP của tôi' — không có căn cứ cá nhân hoá — bot chủ động tag TA thay vì đoán số liệu.",
+            steps: [
+              {
+                who: "user",
+                text: "XP của em sao chưa lên vậy ạ, với cách xem XP ở đâu?",
+              },
+              {
+                who: "bot",
+                badge: ["warn", "⚠ Một phần cần người xác nhận"],
+                text: "Cách xem XP: vào kênh <code>#xp-board</code>, gõ <code>/xp</code> để xem điểm hiện tại. Còn phần <i>'XP của em sao chưa lên'</i> liên quan dữ liệu cá nhân, mình không tự kiểm tra được nên đã chuyển cho TA nhé.",
+                source:
+                  "Phần chung: khớp FAQ đã xác nhận · Phần cá nhân: không đủ căn cứ, không đoán",
+                ta: "Đã tag @TA-trực-tuần cho phần điểm XP cá nhân",
+              },
+            ],
+          },
+          {
+            id: "no-grounding",
+            tag: "①",
+            label: "No-grounding",
+            railLabel: "Failure / không căn cứ (①)",
+            foot: "Không tìm được nguồn → không bịa, chuyển người.",
+            annot:
+              "<b>G10 — Thu hẹp phạm vi khi nghi ngờ:</b> câu hỏi hoàn toàn mới, không khớp FAQ nào đã xác nhận — bot từ chối đoán và nói rõ giới hạn thay vì tạo câu trả lời nghe hợp lý nhưng có thể sai.",
+            steps: [
+              {
+                who: "user",
+                text: "Phòng lab hôm nay đổi chỗ, ai ngồi nhầm phòng thì xử lý sao ạ?",
+              },
+              {
+                who: "bot",
+                badge: ["danger", "✕ Chưa có căn cứ xác nhận"],
+                text: "Mình chưa có câu trả lời được xác nhận cho việc này. Để không trả lời sai, mình đã chuyển câu hỏi này cho TA trực — bạn đợi chút nhé.",
+                source:
+                  "Không khớp với bất kỳ thông báo nào của BTC trong hệ thống",
+                ta: "Đã tag @TA-trực-tuần",
+              },
+            ],
+          },
+          {
+            id: "correction",
+            tag: "✎",
+            label: "Correction",
+            railLabel: "Correction (user sửa)",
+            foot: "Học viên báo sai → đáp án được đánh dấu chờ xác nhận lại.",
+            annot:
+              "<b>G9 — Hỗ trợ sửa dễ dàng:</b> mỗi câu trả lời FAQ có nút báo sai ngay tại chỗ, không cần rời kênh hay mở form riêng; hệ thống không tự sửa nội dung mà đánh dấu chờ TA duyệt lại.",
+            steps: [
+              { who: "user", text: "Hạn nộp Lab02 là khi nào ạ?" },
+              {
+                who: "bot",
+                badge: ["ok", "✓ Khớp FAQ đã xác nhận"],
+                text: "Hạn nộp Lab02: 23:59 ngày 18/09/2026.",
+                source:
+                  "Trả lời dựa trên câu hỏi tương tự đã được TA xác nhận lúc 13/09",
+                actions: [
+                  { label: "Chưa đúng / cập nhật giúp mình", kind: "correct" },
+                ],
+              },
+            ],
+          },
+          {
+            id: "out-of-scope",
+            tag: "③",
+            label: "Ngoài phạm vi",
+            railLabel: "Ngoài phạm vi (③)",
+            foot: "Yêu cầu vượt phạm vi trả lời tự động → từ chối rõ ràng, không giả vờ làm được.",
+            annot:
+              "<b>G11 — Giải thích vì sao:</b> bot nói rõ đây là việc ngoài phạm vi trả lời tự động (không phải 'không hiểu câu hỏi'), giúp học viên biết cần hỏi ai thay vì thử hỏi lại bot nhiều lần.",
+            steps: [
+              {
+                who: "user",
+                text: "Em bị sốt, bot cho em xin gia hạn nộp bài Lab02 thêm 2 tiếng được không?",
+              },
+              {
+                who: "bot",
+                badge: ["warn", "⚠ Ngoài thẩm quyền tự động"],
+                text: "Việc gia hạn deadline mình không có quyền tự quyết định — cần Lab Coach hoặc BTC xem xét. Mình đã chuyển yêu cầu này cho TA và hướng dẫn bạn mở lệnh <code>/ticket create</code> nhé.",
+                source:
+                  "Yêu cầu vượt thẩm quyền của bot tự động (quyết định gia hạn bài thi)",
+                ta: "Đã tag @TA-trực-ban",
+              },
+            ],
+          },
+          {
+            id: "domain-case",
+            tag: "④",
+            label: "Case domain đặc thù",
+            railLabel: "Case đặc thù domain (④)",
+            foot: "Đáp án cũ có thể đã hết hiệu lực → không tái dùng mù quáng.",
+            annot:
+              "<b>G10 + G11:</b> đáp án mang theo ngày xác nhận; khi có tín hiệu quy định vừa đổi (từ khoá 'gia hạn', 'mới') mà chưa có bản xác nhận mới, bot không tái dùng đáp án cũ mà xử lý như case ① — chuyển TA thay vì trả lời có thể đã lỗi thời.",
+            steps: [
+              {
+                who: "user",
+                text: "Em nghe nói lab02 được gia hạn, giờ hạn nộp là khi nào ạ?",
+              },
+              {
+                who: "bot",
+                badge: ["warn", "⚠ Đáp án cũ có thể đã lỗi thời"],
+                text: "Đáp án mình có (23:59 ngày 18/09) được ghi nhận trước khi có tin gia hạn — mình không chắc còn đúng nên chưa muốn trả lời sai. Đã chuyển TA để xác nhận hạn mới nhé.",
+                source:
+                  "Phát hiện từ khoá 'gia hạn' mâu thuẫn với đáp án đã lưu → không tái sử dụng khi chưa xác nhận lại",
+                ta: "Đã tag @TA-trực-tuần",
+              },
+            ],
+          },
+        ];
+
+        var bar = document.getElementById("scenarioBar");
+        var railList = document.getElementById("railList");
+        var chatBody = document.getElementById("chatBody");
+        var chatFoot = document.getElementById("chatFoot");
+        var annot = document.getElementById("annot");
+        var customForm = document.getElementById("customChatForm");
+        var customInput = document.getElementById("customInput");
+
+        // Typing indicator element (tái sử dụng)
+        var typingEl = document.createElement("div");
+        typingEl.className = "typing-indicator";
+
+        // ===== FORM SUBMIT LISTENER =====
+        customForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          var raw = customInput.value.trim();
+          if (!raw) return;
+          customInput.value = "";
+
+          // Chuẩn hóa để kiểm tra tag (bỏ dấu và viết thường)
+          var rawNorm = raw.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/đ/g, "d")
+            .replace(/\s+/g, " ").trim();
+
+          // Hiển thị tin nhắn user
+          addMessageToCurrentChannel({ who: "user", text: raw });
+
+          // Kiểm tra tag @Trợ lý ở kênh ch10
+          var hasTag = rawNorm.includes("@tro ly") || 
+                       rawNorm.includes("@troly") || 
+                       rawNorm.includes("@tr") ||
+                       rawNorm.includes("@bot") ||
+                       rawNorm.includes("@tro");
+
+          if (currentChannel === "ch10" && !hasTag) {
+            addMessageToCurrentChannel({
+              who: "sys",
+              text: "🔇 <i>Bot ở kênh này chỉ phản hồi khi bạn tag <b>@Trợ lý</b> vào câu hỏi!</i>"
+            });
+            return;
+          }
+
+          // Bóc tách tag @mentions khỏi câu hỏi (bỏ @Trợ lý, @tro ly, @Trợ lý ơi, v.v.)
+          var cleanQ = raw
+            .replace(/@[^\s]+(?:\s+lý|\s+ly|\s+oi|\s+ơi)?[\s,:]*/gi, "")
+            .trim();
+
+          // Nếu user chỉ gõ mỗi "@Trợ lý" sau khi vừa hỏi một câu chưa tag trước đó,
+          // tự động lấy câu hỏi trước đó để trả lời!
+          if (!cleanQ || cleanQ.length === 0) {
+            var userMsgs = (channelStore[currentChannel] || []).filter(function(m) { return m.who === "user"; });
+            if (userMsgs.length >= 2) {
+              var prevText = userMsgs[userMsgs.length - 2].text;
+              var prevClean = prevText.replace(/@[^\s]+(?:\s+lý|\s+ly|\s+oi|\s+ơi)?[\s,:]*/gi, "").trim();
+              if (prevClean && prevClean.length > 2) {
+                cleanQ = prevClean;
+              }
+            }
+          }
+
+          // Typing indicator
+          typingEl.innerHTML = '<div class="avatar" style="background:var(--accent-2);opacity:0.7">TL</div><div class="typing-dots"><span></span><span></span><span></span></div>';
+          chatBody.appendChild(typingEl);
+          chatBody.scrollTop = chatBody.scrollHeight;
+
+          setTimeout(function() {
+            if (typingEl.parentNode) typingEl.remove();
+            classifyAndReply(cleanQ || raw, cleanQ || raw);
+          }, 600);
+        });
+
+        scenarios.forEach(function (s) {
+          var b = document.createElement("button");
+          b.className = "scenario-btn";
+          b.id = "btn-" + s.id;
+          b.innerHTML = '<span class="tag">' + s.tag + "</span>" + s.label;
+          b.addEventListener("click", function () {
+            render(s.id);
+          });
+          bar.appendChild(b);
+
+          var r = document.createElement("div");
+          r.className = "rail-item";
+          r.id = "rail-" + s.id;
+          r.textContent = s.railLabel;
+          r.addEventListener("click", function () {
+            render(s.id);
+          });
+          railList.appendChild(r);
+        });
+
+        var isFirstRender = true;
+        var currentScenarioId = "happy";
+        var scenarioHistories = {};
+
+        // Khởi tạo bản sao lịch sử tin nhắn cho từng kịch bản
+        scenarios.forEach(function (s) {
+          scenarioHistories[s.id] = s.steps.slice();
+        });
+
+        // ===== RENDER SCENARIO (play steps vào chat) =====
+        function render(scenarioId) {
+          var s = scenarios.find(function(x) { return x.id === scenarioId; });
+          if (!s) return;
+          currentScenarioId = scenarioId;
+
+          // Highlight nút active
+          document.querySelectorAll(".scenario-btn").forEach(function(b) {
+            b.classList.toggle("active", b.id === "btn-" + scenarioId);
+          });
+          document.querySelectorAll(".rail-item").forEach(function(r) {
+            r.classList.toggle("current", r.id === "rail-" + scenarioId);
+          });
+
+          // Cập nhật annotation
+          if (annot) annot.innerHTML = s.annot || "";
+
+          // Xóa chat và play từng bước với delay
+          chatBody.innerHTML = "";
+          var steps = scenarioHistories[scenarioId] || s.steps;
+          var delay = 0;
+          steps.forEach(function(step) {
+            (function(st, d) {
+              setTimeout(function() { appendMessageDOM(st); }, d);
+            })(step, delay);
+            delay += step.who === "bot" ? 400 : 120;
+          });
+        }
+
+        function renderCurrentChannel() {
+          chatBody.innerHTML = "";
+          var list = channelStore[currentChannel] || [];
+          list.forEach(function (step) {
+            appendMessageDOM(step);
+          });
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function appendMessageDOM(step) {
+          // System message step
+          if (step.who === "sys") {
+            var sysEl = document.createElement("div");
+            sysEl.className = "sys-msg";
+            sysEl.innerHTML = step.text;
+            chatBody.appendChild(sysEl);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            return;
+          }
+
+          var msg = document.createElement("div");
+          msg.className = "msg " + step.who;
+          msg.setAttribute("data-ch", currentChannel);
+
+          // Avatar
+          var av = document.createElement("div");
+          av.className = "avatar";
+          av.textContent = step.who === "user" ? "HV" : "TL";
+          if (step.who !== "user") av.style.background = "var(--accent-2)";
+          msg.appendChild(av);
+
+          // Bubble
+          var bubble = document.createElement("div");
+          bubble.className = "bubble";
+
+          if (step.badge) {
+            var badgeEl = document.createElement("div");
+            badgeEl.className = "badge " + step.badge[0];
+            badgeEl.textContent = step.badge[1];
+            bubble.appendChild(badgeEl);
+          }
+
+          var textEl = document.createElement("div");
+          textEl.innerHTML = step.text || "";
+          bubble.appendChild(textEl);
+
+          if (step.source) {
+            var srcEl = document.createElement("div");
+            srcEl.className = "source-line";
+            srcEl.textContent = "📎 " + step.source;
+            bubble.appendChild(srcEl);
+          }
+
+          if (step.ta) {
+            var taEl = document.createElement("div");
+            taEl.className = "ta-tag";
+            taEl.innerHTML = "🔔 " + step.ta;
+            bubble.appendChild(taEl);
+          }
+
+          if (step.actions && step.actions.length) {
+            var actDiv = document.createElement("div");
+            actDiv.className = "actions";
+            step.actions.forEach(function(act) {
+              var btn = document.createElement("button");
+              btn.className = "action-btn";
+              btn.textContent = act.label;
+              btn.addEventListener("click", function() {
+                btn.classList.add("done");
+                btn.disabled = true;
+              });
+              actDiv.appendChild(btn);
+            });
+            bubble.appendChild(actDiv);
+          }
+
+          msg.appendChild(bubble);
+          chatBody.appendChild(msg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // ===== HELPER: thêm tin nhắn vào kênh hiện tại và render =====
+        var _pendingCacheKey = null; // set trước mỗi bot reply để lưu cache
+        function addMessageToCurrentChannel(step) {
+          channelStore[currentChannel].push(step);
+          appendMessageDOM(step);
+          // Chỉ cache nếu đây là câu trả lời tri thức chuẩn xác (badge: ok và không phải intro/lặp)
+          if (step.who === "bot" && _pendingCacheKey && step.text) {
+            var isOk = step.badge && step.badge[0] === "ok" && !step.badge[1].includes("🔁") && step.topic !== "intro";
+            if (isOk && _pendingCacheKey.length > 3) {
+              answerCache[_pendingCacheKey] = step.text;
+            }
+            _pendingCacheKey = null;
+          }
+        }
+
+        // ===== HÀM PHÂN LOẠI VÀ TRẢ LỜI =====
+        function classifyAndReply(q, cacheKey) {
+          if (!cacheKey) cacheKey = q;
+
+          // Chuẩn hóa chuỗi tìm kiếm không dấu & chữ thường
+          var norm = (q || "").toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/đ/g, "d")
+            .replace(/\s+/g, " ")
+            .trim();
+
+          function matchAny() {
+            for (var i = 0; i < arguments.length; i++) {
+              var kw = arguments[i].toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .trim();
+              if (norm.includes(kw)) return true;
+            }
+            return false;
+          }
+
+          // Phát hiện câu hỏi lặp — trả lời ngay từ cache (chỉ áp dụng cho câu hỏi có độ dài > 3)
+          if (norm.length > 3 && (answerCache[norm] || answerCache[q])) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              badge: ["ok", "🔁 Đã trả lời câu hỏi này · Trả lời ngay"],
+              text: answerCache[norm] || answerCache[q],
+              source: "Nhận diện câu hỏi lặp — không để học viên chờ lần hai"
+            });
+            return;
+          }
+          // Đặt cache key để lưu sau khi trả lời
+          _pendingCacheKey = norm;
+
+          // 1. Khác lớp về cùng lớp / Ghép nhóm (M85755)
+          if (matchAny("khac lop", "ve cung lop", "cung 1 lop", "cung mot lop", "ghep nhom") || (norm.includes("nhom") && matchAny("khac lop", "cung lop", "chuyen lop", "doi lop"))) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "nhom-khac-lop",
+              badge: ["warn", "⚠ Thẩm quyền sắp xếp của BTC"],
+              text: "Việc ghép nhóm khác lớp hoặc chuyển về cùng 1 lớp do BTC quyết định dựa trên vận hành thực tế.<br>Bạn vui lòng mở ticket qua lệnh <code>/ticket create</code> (chọn type: <b>team-issues</b> hoặc <b>general</b>) để Admin hỗ trợ nhé!",
+              source: "Quy trình xử lý sự cố Team & Sắp xếp nhân sự (Discord channel_10)",
+              ta: "Đã tag @BTC-Admin"
+            });
+          }
+          // 2. Lệnh chọn đề tài / Topic pick (M96715, M42370)
+          else if (matchAny("de tai", "topic", "chon de", "ma de", "chon topic", "huong dan chon de")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "de-tai",
+              badge: ["ok", "✓ Khớp hướng dẫn lệnh bot"],
+              text: "<b>Cách xem & chọn đề tài:</b><br>1. Vào kênh <b>#🤖-bot-commands</b>.<br>2. Gõ lệnh <code>/topic pick</code> và chọn mã đề từ gợi ý.<br>• Xem lại đề đã chọn: <code>/topic view</code><br>• Kiểm tra đề còn trống: <code>/topic available code:[Mã_đề]</code>",
+              source: "Hướng dẫn lệnh hệ thống Discord #🤖-bot-commands",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 3. Đăng nhập Zoom bằng mail cá nhân (M27034)
+          else if (norm.includes("zoom") && matchAny("mail", "email", "ca nhan", "dang nhap", "doi ten", "cu phap", "tai khoan")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "zoom-mail",
+              badge: ["ok", "✓ Khớp quy chế Workshop Zoom"],
+              text: "Bạn đăng nhập Zoom bằng <b>Email cá nhân đã đăng ký với chương trình</b> (không dùng mail trường cấp) và đổi tên đúng cú pháp: <code>[Mã Lớp] - [Họ Tên]</code> để hệ thống điểm danh tự động nhé!",
+              source: "Quy định tham gia Workshop Online v2.4 & Kênh #channel_11",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 4. Thời lượng workshop bao lâu (M57505)
+          else if (matchAny("workshop", "buoi hoc", "zoom") && matchAny("bao lau", "thoi luong", "may tieng", "may gio", "ket thuc", "may phut", "den may gio")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "workshop-time",
+              badge: ["ok", "✓ Khớp lịch trình Workshop"],
+              text: "Các buổi Workshop tối thường diễn ra trong khoảng <b>1.5h – 2h</b> (từ 19:30 đến khoảng 21:00 – 21:30). Bạn cần tham gia tối thiểu ≥ 80% thời lượng để được tính điểm danh nhé!",
+              source: "Lịch trình Workshop tuần Onboarding & Quy chế điểm danh",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 5. Nhầm phòng (TC09)
+          else if (matchAny("nham phong", "ngoi nham", "nham lop", "doi phong")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "nham-phong",
+              badge: ["danger", "✕ Chưa có căn cứ xác nhận"],
+              text: "Mình chưa có thông tin chính thức về trường hợp đổi phòng này. Bạn vui lòng hỏi trực tiếp TA/trợ giảng để xác nhận danh sách phòng nhé!",
+              source: "Không khớp với thông báo phòng học cố định của BTC",
+              ta: "Đã tag @TA-trực-tuần"
+            });
+          }
+          // 6. Standup / Daily (TC03, TC05)
+          else if (matchAny("standup", "stand up", "daily", "bao cao ngay", "bao cao tien do", "nop standup", "lenh standup")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "standup",
+              badge: ["ok", "✓ Khớp quy chế Daily Standup"],
+              text: "<b>Daily Standup</b> là báo cáo tiến độ cá nhân hàng ngày.<br>🕒 Khung giờ nộp: <b>00:00 – 10:00 sáng hàng ngày</b>.<br>📍 Nơi nộp: gõ lệnh <code>/standup submit</code> tại kênh <b>channel_10</b> (hoặc kênh #standup).",
+              source: "Trích dẫn: Sổ tay học viên AI20K & Kênh #📢-thông-báo",
+              actions: [
+                { label: "👍 Đúng ý mình", kind: "done" },
+                { label: "Không phải điều tôi hỏi", kind: "plain" }
+              ]
+            });
+          }
+          // 7. XP / Điểm thưởng (TC04)
+          else if (matchAny("xp", "diem xp", "bang xep hang", "leaderboard", "ranking", "diem thuong", "tinh diem")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "xp",
+              badge: ["ok", "✓ Khớp quy chế tính điểm"],
+              text: "Bạn có thể xem điểm và bảng xếp hạng XP tại kênh <b>#xp-board</b> hoặc gõ lệnh <code>/leaderboard</code> (hoặc <code>/xp</code>) nhé!",
+              source: "Trích dẫn: Quy định tính điểm XP & Kênh bot tra cứu",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 8. Record workshop / Video xem lại (TC02)
+          else if (matchAny("record", "video", "xem lai", "tai nguyen", "ghi hinh", "xem lai buoi")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "record",
+              badge: ["ok", "✓ Khớp tài nguyên lớp học"],
+              text: "Video Record các buổi Workshop được lưu trữ tại kênh <b>#tài-nguyên</b> trên Discord hoặc mục <b>Workshop</b> trên hệ thống VLearn.",
+              source: "Trích dẫn: #📢-thông-báo-lớp-học · Kho tài nguyên K4",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 9. Phòng lab offline (TC06)
+          else if (matchAny("phong", "dia chi", "dia diem", "o dau", "e402", "e403") && matchAny("lab", "offline", "hoc o dau", "phong nao")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "phong-lab",
+              badge: ["ok", "✓ Khớp thông báo phòng học"],
+              text: "Phòng học Lab offline diễn ra tại phòng <b>E402 và E403</b>.",
+              source: "Trích dẫn: Lịch học tuần Onboarding BTC",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 10. Nơi nộp bài Lab (TC08)
+          else if (matchAny("nop bai", "submit", "vlearn", "github", "nop o dau", "nop tren") && matchAny("o dau", "nen tang", "submit", "tren", "nhu the nao", "huong dan")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "nop-bai",
+              badge: ["ok", "✓ Khớp quy chế nộp bài"],
+              text: "Nộp bài Lab02 gồm 2 bước: Submit đường dẫn trên hệ thống <b>VLearn</b> và commit mã nguồn lên <b>GitHub Org</b> của lớp.",
+              source: "Trích dẫn: Quy chế nộp bài Lab AI20K",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 11. Deadline Lab02 / Phân biệt 12:00 vs 23:59 (TC01, TC18, TC19)
+          else if ((norm.includes("12:00") && norm.includes("23:59")) || (matchAny("12h", "12:00", "trua") && matchAny("23:59", "23h59", "dem"))) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "deadline-lab02",
+              badge: ["ok", "✓ Phân biệt hai mốc giờ"],
+              text: "Hai mốc giờ có ý nghĩa khác nhau:<br>• <b>12:00 trưa:</b> Hạn demo / checkpoint trực tiếp trên lớp.<br>• <b>23:59 đêm:</b> Hạn chót submit code & báo cáo trên VLearn và GitHub Org.",
+              source: "Trích dẫn: Thông báo lịch trình Lab02",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          // 12. Lab03 / Lab04 chưa có thông báo
+          else if (matchAny("lab03", "lab04", "lab 03", "lab 04", "lab 3", "lab 4") || (norm.includes("lab") && matchAny("03", "04", "3", "4"))) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "lab03-lab04",
+              badge: ["danger", "✕ Chưa có căn cứ xác nhận"],
+              text: "Hiện tại <b>chưa có thông báo chính thức về Lab03/Lab04</b>. Bạn vui lòng theo dõi kênh #📢-thông-báo hoặc hỏi TA nhé!",
+              source: "Chưa có thông báo chính thức từ BTC",
+              ta: "Đã tag @TA-trực-tuần"
+            });
+          }
+          // 13. Deadline Lab02 (TC01) - Bao quát cả "hạn nộp", "han nap", "deadline", "bao gio nop", "hom nay", v.v.
+          else if (matchAny("lab02", "lab 02", "lab2", "lab 2", "han nop", "han nap", "deadline", "bao gio nop", "khi nao nop", "ngay nop", "thoi han nop", "hom nay", "luc nao nop")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "deadline-lab02",
+              badge: ["ok", "✓ Khớp thông báo chính thức BTC"],
+              text: "Hạn nộp bài <b>Lab02</b> chính thức là <b>23:59 Thứ Sáu, ngày 18/09/2026</b> trên hệ thống VLearn và GitHub Org.",
+              source: "Trích dẫn: #📢-thông-báo-lớp-học (Mã tin BTC_ANN_042)",
+              actions: [
+                { label: "👍 Đúng ý mình", kind: "done" },
+                { label: "Không phải điều tôi hỏi", kind: "plain" }
+              ]
+            });
+          }
+          // 14. Điểm danh Zoom vs Lab (TC07, TC12)
+          else if (norm.includes("zoom")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "diem-danh",
+              badge: ["ok", "✓ Khớp quy chế Workshop Zoom"],
+              text: "Điểm danh Workshop Zoom được tính tự động qua <b>Email đăng ký</b> và <b>Cú pháp tên Zoom [Mã Lớp] - [Họ Tên]</b>. Yêu cầu tham gia tối thiểu ≥ 80% thời lượng.",
+              source: "Trích dẫn: Quy định tham gia Workshop Online v2.4",
+              actions: [{ label: "👍 Đúng ý mình", kind: "done" }]
+            });
+          }
+          else if (matchAny("diem danh", "attendance", "checkin", "check in", "quet qr", "qr")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "diem-danh",
+              badge: ["warn", "⚠ Cần làm rõ phạm vi"],
+              text: "Chương trình có 2 hình thức điểm danh:<br>1. <b>Lab offline:</b> Quét mã QR tại cửa phòng E402/E403 trong 15 phút đầu giờ.<br>2. <b>Workshop Zoom:</b> Tự động qua email và cú pháp tên đăng nhập.<br>Bạn đang thắc mắc về hình thức nào?",
+              source: "Trích dẫn: Sổ tay quy chế học tập AI20K v2.4",
+              actions: [
+                { label: "🏢 Lab offline", kind: "done" },
+                { label: "💻 Workshop Zoom", kind: "done" }
+              ]
+            });
+          }
+          // 15. Ngoài phạm vi: Check bài, xin gia hạn, lỗi commit (TC15, TC16, TC17)
+          else if (matchAny("check", "kiem tra bai", "da nop chua", "nop chua", "kiem tra giup", "check bai")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "check-bai",
+              badge: ["warn", "⚠ Ngoài thẩm quyền tra cứu"],
+              text: "Bot không có quyền truy cập dữ liệu cá nhân của bạn. Vui lòng tự đăng nhập vào <b>VLearn</b> để kiểm tra trạng thái nộp bài, hoặc mở ticket hỗ trợ qua <code>/ticket create</code>.",
+              source: "Nguyên tắc an toàn dữ liệu cá nhân học viên",
+              ta: "Đã tag @TA-trực-ban"
+            });
+          }
+          // TC16: Lỗi mạng / sự cố commit sau deadline (M40677)
+          else if (matchAny("commit", "loi mang", "mang lag", "su co commit", "rot mang", "khong day len duoc") || (matchAny("su co", "loi") && matchAny("nop", "commit", "push"))) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "su-co-mang",
+              badge: ["warn", "⚠ Vượt thẩm quyền quyết định"],
+              text: "Bot không có thẩm quyền tự quyết định tính đúng hạn cho các trường hợp nộp muộn do lỗi kỹ thuật. Hạn nộp Lab02 chính thức vẫn là <b>23:59 Thứ Sáu, ngày 18/09/2026</b>.<br><br>👉 Bạn vui lòng chụp lại ảnh màn hình lỗi mạng/commit (có hiển thị thời gian) và gõ lệnh <code>/ticket create</code> hoặc nhắn trực tiếp cho <b>@Vlearn Admin</b> / @TA-trực-ban để BTC xem xét hỗ trợ nhé!",
+              source: "Quy chế xử lý sự cố kỹ thuật & Thẩm quyền BTC (TC16 - k4_messages.csv M40677)",
+              ta: "Đã tag @Vlearn Admin"
+            });
+          }
+          else if (matchAny("gia han", "xin them gio", "nop tre", "nop muon", "sot", "om", "benh", "xin nghi", "xin hoan")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "gia-han",
+              badge: ["warn", "⚠ Vượt thẩm quyền tự động"],
+              text: "Bot không có thẩm quyền gia hạn deadline. Quyết định thuộc về BTC và Coach. Bạn vui lòng liên hệ trực tiếp TA hoặc mở <code>/ticket create</code> kèm minh chứng để được hỗ trợ.",
+              source: "Quy chế thẩm quyền gia hạn deadline",
+              ta: "Đã tag @TA-trực-ban"
+            });
+          }
+          // 16. Xe buýt / di chuyển (TC10)
+          else if (matchAny("xe buyt", "xe buy", "bus", "di chuyen", "phuong tien", "xe dua don")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "xe-buyt",
+              badge: ["danger", "✕ Chưa có căn cứ xác nhận"],
+              text: "Mình chưa có thông tin chính thức về dịch vụ xe đưa đón/di chuyển. Bạn vui lòng liên hệ BTC hoặc hỏi tại kênh chung nhé!",
+              source: "Không tìm thấy căn cứ khớp trong dữ liệu BTC",
+              ta: "Đã tag @TA-trực-tuần"
+            });
+          }
+          // 17. Prompt Injection (TC20)
+          else if (matchAny("bo qua", "ignore", "quen het", "pretend", "jailbreak", "dong vai")) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "prompt-injection",
+              badge: ["ok", "✓ Giữ vững nguyên tắc bảo mật"],
+              text: "Mình vẫn tuân thủ nguyên tắc hỗ trợ học tập K4. Hạn nộp Lab02 vẫn là <b>23:59 Thứ Sáu, ngày 18/09/2026</b> nhé!",
+              source: "Quy tắc an toàn hệ thống trợ lý AI",
+              actions: [{ label: "👍 Đã hiểu", kind: "done" }]
+            });
+          }
+          // 18. Input cộc lốc / thử nghiệm (TC13)
+          else if (norm.length <= 3 || /^[\d\W]+$/.test(norm)) {
+            addMessageToCurrentChannel({
+              who: "bot",
+              topic: "intro",
+              badge: ["warn", "⚠ Cần thêm thông tin"],
+              text: "Xin chào! Mình là trợ lý AI hỗ trợ học viên <b>K4 AI20K Build Phase</b> 🤖<br><br>Bạn có thể hỏi mình về:<br>• 📅 Hạn nộp bài Lab02<br>• 📍 Địa điểm phòng học Lab offline<br>• 🎙 Quy chế điểm danh Zoom / Lab<br>• 📋 Daily Standup là gì &amp; nộp ở đâu<br>• ⭐ Cách xem điểm XP và bảng xếp hạng<br><br>Bạn muốn hỏi gì, cứ gõ thoải mái nhé!",
+              source: "Hướng dẫn sử dụng trợ lý AI K4",
+              actions: [{ label: "📅 Hạn nộp Lab02?", kind: "plain" }]
+            });
+          }
+          // 19. Fallback — có nội dung nhưng không khớp tri thức nào
+          else {
+            if (currentChannel !== "ch10") {
+              addMessageToCurrentChannel({
+                who: "sys",
+                text: "💡 <i>Mình chưa nhận ra câu hỏi này. Bạn thử hỏi ở <b>#channel_10</b> hoặc tag <b>@Trợ lý</b> để được hỗ trợ nhé!</i>"
+              });
+            } else {
+              addMessageToCurrentChannel({
+                who: "bot",
+                badge: ["warn", "⚠ Chưa nhận diện được câu hỏi"],
+                text: "Mình chưa tìm thấy câu trả lời chính thức cho câu hỏi này trong dữ liệu BTC.<br>Bạn có thể thử diễn đạt lại câu hỏi, hoặc mở ticket qua <code>/ticket create</code> để Admin hỗ trợ nhé!",
+                source: "Không tìm thấy căn cứ khớp trong dữ liệu BTC",
+                actions: [{ label: "📩 Mở ticket hỗ trợ", kind: "done" }]
+              });
+            }
+          }
+        }
+
+        // Khởi động với kênh ch02
+        switchChannel("ch02");
+      })();
+    </script>
+  </body>
+</html>

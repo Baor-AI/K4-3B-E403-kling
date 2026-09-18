@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FAQ Tức Thì — Prototype CP2</title>
+  </head>
+  <body>
+    <style>
+      :root {
+        --bg: #f5f4ef;
+        --panel: #ffffff;
+        --panel-2: #edeae0;
+        --border: #ddd6c6;
+        --ink: #20241f;
+        --ink-dim: #6b6c5f;
+        --accent: #3d5a3a;
+        --accent-2: #8a6b3d;
+        --accent-soft: #e4ead9;
+        --bot-bubble: #eef2e9;
+        --user-bubble: #3d5a3a;
+        --user-bubble-ink: #ffffff;
+        --warn-bg: #fdf1de;
+        --warn-ink: #7a4a1a;
+        --danger-bg: #fbe6e2;
+        --danger-ink: #8a2f1f;
+        --ok-bg: #e4ead9;
+        --ok-ink: #2f4a2c;
+        --shadow:
+          0 1px 2px rgba(32, 36, 31, 0.06), 0 10px 28px rgba(32, 36, 31, 0.06);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #16180f;
+          --panel: #1f2116;
+          --panel-2: #262819;
+          --border: #3a3c2c;
+          --ink: #ecece2;
+          --ink-dim: #a3a492;
+          --accent: #8fd18a;
+          --accent-2: #e0b26e;
+          --accent-soft: #28331f;
+          --bot-bubble: #232a20;
+          --user-bubble: #3f6b3c;
+          --user-bubble-ink: #f2fbee;
+          --warn-bg: #3a2c17;
+          --warn-ink: #e6b878;
+          --danger-bg: #3a2320;
+          --danger-ink: #f0a591;
+          --ok-bg: #243322;
+          --ok-ink: #9fe0a0;
+          --shadow:
+            0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #16180f;
+        --panel: #1f2116;
+        --panel-2: #262819;
+        --border: #3a3c2c;
+        --ink: #ecece2;
+        --ink-dim: #a3a492;
+        --accent: #8fd18a;
+        --accent-2: #e0b26e;
+        --accent-soft: #28331f;
+        --bot-bubble: #232a20;
+        --user-bubble: #3f6b3c;
+        --user-bubble-ink: #f2fbee;
+        --warn-bg: #3a2c17;
+        --warn-ink: #e6b878;
+        --danger-bg: #3a2320;
+        --danger-ink: #f0a591;
+        --ok-bg: #243322;
+        --ok-ink: #9fe0a0;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.4);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          "Source Sans 3",
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding-inline: 16px;
+        padding-block: 28px 56px;
+      }
+      h1,
+      h2 {
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 600;
+        margin: 0;
+        text-wrap: balance;
+      }
+      .eyebrow {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 8px;
+      }
+      header {
+        margin-bottom: 20px;
+      }
+      header h1 {
+        font-size: clamp(24px, 4.5vw, 32px);
+      }
+      .lede {
+        color: var(--ink-dim);
+        font-size: 14.5px;
+        max-width: 64ch;
+        margin-top: 8px;
+      }
+
+      .scenario-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-block: 18px 22px;
+      }
+      .scenario-btn {
+        font-family: inherit;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--ink);
+        padding: 9px 14px;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        transition:
+          transform 0.1s ease,
+          border-color 0.15s ease;
+      }
+      .scenario-btn:hover {
+        border-color: var(--accent);
+      }
+      .scenario-btn:active {
+        transform: scale(0.98);
+      }
+      .scenario-btn.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+      .scenario-btn .tag {
+        display: inline-block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        margin-right: 6px;
+        opacity: 0.75;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 18px;
+      }
+      @media (max-width: 680px) {
+        .stage {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .rail {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: var(--shadow);
+        align-self: start;
+        position: sticky;
+        top: 12px;
+      }
+      .rail h3 {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ink-dim);
+        margin: 0 0 10px;
+      }
+      .rail-item {
+        font-size: 13px;
+        padding: 7px 8px;
+        border-radius: 8px;
+        color: var(--ink-dim);
+        margin-bottom: 2px;
+      }
+      .rail-item.current {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .chat-panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 420px;
+      }
+      .chat-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel-2);
+      }
+      .chat-head .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .chat-head .name {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .chat-head .sub {
+        font-size: 12px;
+        color: var(--ink-dim);
+      }
+
+      .chat-body {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-height: 280px;
+      }
+      .msg {
+        display: flex;
+        gap: 10px;
+        max-width: 88%;
+        opacity: 0;
+        transform: translateY(6px);
+        animation: in 0.35s ease forwards;
+      }
+      @keyframes in {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .msg.user {
+        align-self: flex-end;
+        flex-direction: row-reverse;
+      }
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        background: var(--accent-2);
+      }
+      .msg.user .avatar {
+        background: var(--ink-dim);
+      }
+      .bubble {
+        background: var(--bot-bubble);
+        color: var(--ink);
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: 14.5px;
+        line-height: 1.5;
+        border: 1px solid var(--border);
+      }
+      .msg.user .bubble {
+        background: var(--user-bubble);
+        color: var(--user-bubble-ink);
+        border-color: transparent;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 999px;
+        margin-bottom: 8px;
+      }
+      .badge.ok {
+        background: var(--ok-bg);
+        color: var(--ok-ink);
+      }
+      .badge.warn {
+        background: var(--warn-bg);
+        color: var(--warn-ink);
+      }
+      .badge.danger {
+        background: var(--danger-bg);
+        color: var(--danger-ink);
+      }
+
+      .source-line {
+        font-size: 11.5px;
+        color: var(--ink-dim);
+        margin-top: 8px;
+        font-style: italic;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .action-btn {
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--ink-dim);
+        padding: 6px 10px;
+      }
+      .action-btn:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .action-btn.done {
+        background: var(--ok-bg);
+        color: var(--ok-ink);
+        border-color: transparent;
+        cursor: default;
+      }
+
+      .ta-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--accent-2);
+        margin-top: 8px;
+      }
+
+      .chat-foot {
+        padding: 12px 18px;
+        border-top: 1px solid var(--border);
+        background: var(--panel-2);
+        font-size: 12px;
+        color: var(--ink-dim);
+      }
+
+      .annot {
+        margin-top: 16px;
+        background: var(--panel-2);
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 13px;
+        color: var(--ink-dim);
+      }
+      .annot b {
+        color: var(--ink);
+      }
+
+      footer {
+        margin-top: 36px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        font-size: 12.5px;
+        color: var(--ink-dim);
+      }
+      code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        background: var(--panel-2);
+        padding: 1px 5px;
+        border-radius: 5px;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght…@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+    />
+
+    <div class="wrap">
+      <header>
+        <p class="eyebrow">
+          Track B · Trợ lý Discord — CP2 clickable prototype
+        </p>
+        <h1>FAQ Tức Thì</h1>
+        <p class="lede">
+          Bấm một kịch bản bên dưới để xem bot "Trợ lý" xử lý câu hỏi thủ tục
+          lặp lại theo từng nhánh trải nghiệm — happy path, low-confidence,
+          no-grounding, correction, ngoài phạm vi, và case domain đặc thù.
+        </p>
+      </header>
+
+      <div class="scenario-bar" id="scenarioBar"></div>
+
+      <div class="stage">
+        <nav class="rail" id="rail">
+          <h3>4+2 nhánh trải nghiệm</h3>
+          <div id="railList"></div>
+        </nav>
+
+        <div class="chat-panel">
+          <div class="chat-head">
+            <div class="dot"></div>
+            <div>
+              <div class="name">channel_10 · #trợ-lý</div>
+              <div class="sub">Bot "Trợ lý" — AI20K Build Phase Cohort 4</div>
+            </div>
+          </div>
+          <div class="chat-body" id="chatBody"></div>
+          <div class="chat-foot" id="chatFoot">
+            Chọn một kịch bản ở trên để bắt đầu.
+          </div>
+        </div>
+      </div>
+
+      <div class="annot" id="annot"></div>
+
+      <footer>
+        Prototype mức <b>Mock</b> — luồng điều hướng và tương tác (nút sửa/gạt
+        bỏ/tag TA) chạy thật bằng JS; nội dung "nhận diện FAQ trùng" mô phỏng
+        bằng case cố định, chưa gọi mô hình thật (phần đó thuộc CP3). Dựng cho
+        lát cắt <b>B2 · Trả lời tức thì FAQ lặp lại</b> — dữ liệu bằng chứng từ
+        <code>k4_messages.csv</code>.
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        var scenarios = [
+          {
+            id: "happy",
+            tag: "①→ok",
+            label: "Happy path",
+            railLabel: "Happy path",
+            foot: "AI tự trả lời — khớp cao với FAQ đã xác nhận.",
+            annot:
+              "<b>G11 — Giải thích vì sao:</b> câu trả lời luôn kèm dòng nguồn 'đã xác nhận lúc...' để học viên biết đây là đáp án tái dùng, không phải suy luận mới. <b>G8 — Gạt bỏ dễ dàng:</b> có nút 'Không phải điều tôi hỏi' để thoát ngay nếu bot hiểu sai ý.",
+            steps: [
+              { who: "user", text: "Cho mình hỏi cách nộp daily standup ạ?" },
+              {
+                who: "bot",
+                badge: ["ok", "✓ Khớp FAQ đã xác nhận"],
+                text: "Bạn dùng lệnh <code>/standup submit</code> trong channel_10, nộp theo cá nhân (không theo nhóm). Hạn nộp: trước 23:59 mỗi ngày.",
+                source:
+                  "Trả lời dựa trên câu hỏi tương tự đã được TA xác nhận lúc 13/09 · 3 học viên khác từng hỏi câu này",
+                actions: [
+                  { label: "👍 Đúng ý mình", kind: "done" },
+                  { label: "Không phải điều tôi hỏi", kind: "plain" },
+                ],
+              },
+            ],
+          },
+          {
+            id: "low-confidence",
+            tag: "②",
+            label: "Low-confidence",
+            railLabel: "Low-confidence (②)",
+            foot: "AI trả lời phần chắc, chuyển TA phần mơ hồ — không đoán.",
+            annot:
+              "<b>G10 — Thu hẹp phạm vi khi nghi ngờ (bắt buộc):</b> câu hỏi lẫn phần cá nhân nên bot chỉ trả lời phần FAQ chung (cách xem XP), còn phần 'XP của tôi' — không có căn cứ cá nhân hoá — bot chủ động tag TA thay vì đoán số liệu.",
+            steps: [
+              {
+                who: "user",
+                text: "XP của em sao chưa lên vậy ạ, với cách xem XP ở đâu?",
+              },
+              {
+                who: "bot",
+                badge: ["warn", "⚠ Một phần cần người xác nhận"],
+                text: "Cách xem XP: vào kênh <code>#xp-board</code>, gõ <code>/xp</code> để xem điểm hiện tại. Còn phần <i>'XP của em sao chưa lên'</i> liên quan dữ liệu cá nhân, mình không tự kiểm tra được nên đã chuyển cho TA nhé.",
+                source:
+                  "Phần chung: khớp FAQ đã xác nhận · Phần cá nhân: không đủ căn cứ, không đoán",
+                ta: "Đã tag @TA-trực-tuần cho phần điểm XP cá nhân",
+              },
+            ],
+          },
+          {
+            id: "no-grounding",
+            tag: "①",
+            label: "No-grounding",
+            railLabel: "Failure / không căn cứ (①)",
+            foot: "Không tìm được nguồn → không bịa, chuyển người.",
+            annot:
+              "<b>G10 — Thu hẹp phạm vi khi nghi ngờ:</b> câu hỏi hoàn toàn mới, không khớp FAQ nào đã xác nhận — bot từ chối đoán và nói rõ giới hạn thay vì tạo câu trả lời nghe hợp lý nhưng có thể sai.",
+            steps: [
+              {
+                who: "user",
+                text: "Phòng lab hôm nay đổi chỗ, ai ngồi nhầm phòng thì xử lý sao ạ?",
+              },
+              {
+                who: "bot",
+                badge: ["danger", "✕ Chưa có căn cứ xác nhận"],
+                text: "Mình chưa có câu trả lời được xác nhận cho việc này. Để không trả lời sai, mình đã chuyển câu hỏi này cho TA trực — bạn đợi chút nhé.",
+                source:
+                  "Không khớp với bất kỳ FAQ nào đã xác nhận trong hệ thống",
+                ta: "Đã tag @TA-trực-tuần",
+              },
+            ],
+          },
+          {
+            id: "correction",
+            tag: "✎",
+            label: "Correction",
+            railLabel: "Correction (user sửa)",
+            foot: "Học viên báo sai → đáp án được đánh dấu chờ xác nhận lại.",
+            annot:
+              "<b>G9 — Hỗ trợ sửa dễ dàng:</b> mỗi câu trả lời FAQ có nút báo sai ngay tại chỗ, không cần rời kênh hay mở form riêng; hệ thống không tự sửa nội dung mà đánh dấu chờ TA duyệt lại.",
+            steps: [
+              { who: "user", text: "Hạn nộp lab02 là khi nào ạ?" },
+              {
+                who: "bot",
+                badge: ["ok", "✓ Khớp FAQ đã xác nhận"],
+                text: "Hạn nộp Lab02: 23:59 ngày 15/09.",
+                source:
+                  "Trả lời dựa trên câu hỏi tương tự đã được TA xác nhận lúc 12/09",
+                actions: [
+                  { label: "Chưa đúng / cập nhật giúp mình", kind: "correct" },
+                ],
+              },
+            ],
+          },
+          {
+            id: "out-of-scope",
+            tag: "③",
+            label: "Ngoài phạm vi",
+            railLabel: "Ngoài phạm vi (③)",
+            foot: "Yêu cầu vượt phạm vi trả lời tự động → từ chối rõ ràng, không giả vờ làm được.",
+            annot:
+              "<b>G11 — Giải thích vì sao:</b> bot nói rõ đây là việc ngoài phạm vi trả lời tự động (không phải 'không hiểu câu hỏi'), giúp học viên biết cần hỏi ai thay vì thử hỏi lại bot nhiều lần.",
+            steps: [
+              {
+                who: "user",
+                text: "Bot ơi sửa giúp em điểm danh buổi hôm qua với, em quét QR mà không lên",
+              },
+              {
+                who: "bot",
+                badge: ["warn", "⚠ Ngoài phạm vi tự động"],
+                text: "Việc sửa điểm danh mình không có quyền tự xử lý — cần TA kiểm tra và duyệt tay. Mình đã chuyển yêu cầu này cho TA kèm nội dung bạn vừa gửi.",
+                source:
+                  "Yêu cầu thuộc nhóm hành động cần con người duyệt (sửa dữ liệu điểm danh)",
+                ta: "Đã tag @TA-điểm-danh",
+              },
+            ],
+          },
+          {
+            id: "domain-case",
+            tag: "④",
+            label: "Case domain đặc thù",
+            railLabel: "Case đặc thù domain (④)",
+            foot: "Đáp án cũ có thể đã hết hiệu lực → không tái dùng mù quáng.",
+            annot:
+              "<b>G10 + G11:</b> đáp án FAQ mang theo ngày xác nhận; khi có tín hiệu quy định vừa đổi (từ khoá 'gia hạn', 'mới') mà chưa có bản xác nhận mới, bot không tái dùng đáp án cũ mà xử lý như case ① — chuyển TA thay vì trả lời có thể đã lỗi thời.",
+            steps: [
+              {
+                who: "user",
+                text: "Em nghe nói lab02 được gia hạn, giờ hạn nộp là khi nào ạ?",
+              },
+              {
+                who: "bot",
+                badge: ["warn", "⚠ Đáp án cũ có thể đã lỗi thời"],
+                text: "Đáp án mình có (23:59 ngày 15/09) được xác nhận trước khi có tin gia hạn — mình không chắc còn đúng nên chưa muốn trả lời sai. Đã chuyển TA để xác nhận hạn mới nhé.",
+                source:
+                  "Phát hiện từ khoá 'gia hạn' mâu thuẫn với đáp án đã lưu → không tái sử dụng khi chưa xác nhận lại",
+                ta: "Đã tag @TA-trực-tuần",
+              },
+            ],
+          },
+        ];
+
+        var bar = document.getElementById("scenarioBar");
+        var railList = document.getElementById("railList");
+        var chatBody = document.getElementById("chatBody");
+        var chatFoot = document.getElementById("chatFoot");
+        var annot = document.getElementById("annot");
+
+        scenarios.forEach(function (s) {
+          var b = document.createElement("button");
+          b.className = "scenario-btn";
+          b.id = "btn-" + s.id;
+          b.innerHTML = '<span class="tag">' + s.tag + "</span>" + s.label;
+          b.addEventListener("click", function () {
+            render(s.id);
+          });
+          bar.appendChild(b);
+
+          var r = document.createElement("div");
+          r.className = "rail-item";
+          r.id = "rail-" + s.id;
+          r.textContent = s.railLabel;
+          railList.appendChild(r);
+        });
+
+        function escapeSafe(html) {
+          return html;
+        } // content is authored, not user-supplied
+
+        function render(id) {
+          var s = scenarios.filter(function (x) {
+            return x.id === id;
+          })[0];
+          if (!s) return;
+
+          scenarios.forEach(function (x) {
+            document
+              .getElementById("btn-" + x.id)
+              .classList.toggle("active", x.id === id);
+            document
+              .getElementById("rail-" + x.id)
+              .classList.toggle("current", x.id === id);
+          });
+
+          chatBody.innerHTML = "";
+          chatFoot.textContent = s.foot;
+          annot.innerHTML = s.annot;
+
+          var delay = 0;
+          s.steps.forEach(function (step) {
+            setTimeout(function () {
+              addMessage(step);
+            }, delay);
+            delay += 450;
+          });
+        }
+
+        function addMessage(step) {
+          var msg = document.createElement("div");
+          msg.className = "msg " + step.who;
+
+          var avatar = document.createElement("div");
+          avatar.className = "avatar";
+          avatar.textContent = step.who === "user" ? "HV" : "TL";
+          msg.appendChild(avatar);
+
+          var bubble = document.createElement("div");
+          bubble.className = "bubble";
+
+          var html = "";
+          if (step.badge) {
+            html +=
+              '<span class="badge ' +
+              step.badge[0] +
+              '">' +
+              step.badge[1] +
+              "</span><br>";
+          }
+          html += step.text;
+          if (step.source) {
+            html += '<div class="source-line">' + step.source + "</div>";
+          }
+          if (step.ta) {
+            html += '<div class="ta-tag">👤 ' + step.ta + "</div>";
+          }
+          bubble.innerHTML = html;
+
+          if (step.actions) {
+            var wrap = document.createElement("div");
+            wrap.className = "actions";
+            step.actions.forEach(function (a) {
+              var btn = document.createElement("button");
+              btn.className = "action-btn";
+              btn.textContent = a.label;
+              btn.addEventListener("click", function () {
+                if (a.kind === "correct") {
+                  btn.textContent = "✓ Đã ghi nhận — chờ TA xác nhận lại";
+                  btn.classList.add("done");
+                  btn.disabled = true;
+                  var flag = document.createElement("div");
+                  flag.className = "ta-tag";
+                  flag.innerHTML =
+                    "👤 Đã tag @TA-trực-tuần để xác nhận lại đáp án này";
+                  bubble.appendChild(flag);
+                } else if (a.kind === "done") {
+                  btn.textContent = "✓ Đã ghi nhận";
+                  btn.classList.add("done");
+                  btn.disabled = true;
+                } else {
+                  btn.textContent = "✓ Đã bỏ qua câu trả lời này";
+                  btn.classList.add("done");
+                  btn.disabled = true;
+                }
+              });
+              wrap.appendChild(btn);
+            });
+            bubble.appendChild(wrap);
+          }
+
+          msg.appendChild(bubble);
+          chatBody.appendChild(msg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        render("happy");
+      })();
+    </script>
+  </body>
+</html>
