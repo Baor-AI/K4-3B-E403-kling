@@ -5,3 +5,7 @@ node_modules/
 bot_test.py
 *.groovy
 eval/run_eval.py
+data/
+*.zip
+*.tar.gz
+
